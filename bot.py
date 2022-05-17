@@ -7,6 +7,7 @@ from telegram.ext import Updater
 from dotenv import load_dotenv
 from utils import get_logger
 import json
+from pprint import pprint
 from const import FORBIDDEN
 
 logger = get_logger('bot.py', 'log.txt')
@@ -33,12 +34,13 @@ def delete_message(context, chat_id, message_id, message_data):
 
 def foo(update: Update, context: CallbackContext):
     message_data = update.message.to_dict()
+    pprint(message_data)
     chat_id = update.message.chat_id
     message_id = update.message.message_id
     urls = collect_urls(message_data)
 
     for forbidden in FORBIDDEN:
-        if forbidden in message_data['text']:
+        if 'text' in message_data and forbidden in message_data['text']:
             delete_message(context, chat_id, message_id, message_data)
 
         for url in urls:
@@ -46,9 +48,12 @@ def foo(update: Update, context: CallbackContext):
                 delete_message(context, chat_id, message_id, message_data)
                 break
 
-    if message_data['text'] == '/log':
+    if 'text' in message_data and message_data['text'] == '/log':
         context.bot.sendDocument(chat_id=chat_id,
                                  caption="logfile", document=open('log.txt', 'rb'))
+
+    # if 'new_chat_members' in message_data and len(message_data['new_chat_members']) > 0:
+    #     delete_message(context, chat_id, message_id, message_data)
 
 
 mh = MessageHandler(Filters.all, foo)
