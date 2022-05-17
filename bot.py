@@ -6,8 +6,8 @@ from telegram.ext import Filters
 from telegram.ext import Updater
 from dotenv import load_dotenv
 from utils import get_logger
-from pprint import pprint
 import json
+from const import FORBIDDEN
 
 logger = get_logger('bot.py', 'log.txt')
 
@@ -15,8 +15,6 @@ load_dotenv(dotenv_path='.env')
 TOKEN = os.getenv("token")
 updater = Updater(token=TOKEN, use_context=True)
 dispatcher = updater.dispatcher
-
-FORBIDDEN = ['https://t.me/', 'https://telegram.me', '/joinchat/']
 
 
 def collect_urls(message_data):
