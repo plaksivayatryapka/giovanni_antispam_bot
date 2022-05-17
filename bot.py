@@ -53,6 +53,7 @@ def foo(update: Update, context: CallbackContext):
                                  caption="logfile", document=open('log.txt', 'rb'))
 
     # if 'new_chat_members' in message_data and len(message_data['new_chat_members']) > 0:
+    # smth strange happens. During tests chat opens more slowly. That's a bad sign, so disabling it.
     #     delete_message(context, chat_id, message_id, message_data)
 
 
